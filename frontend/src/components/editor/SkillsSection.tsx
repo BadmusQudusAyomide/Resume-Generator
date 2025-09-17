@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useResume } from '../../contexts/ResumeContext'
 import { Plus, Trash2, Edit3 } from 'lucide-react'
 
@@ -39,7 +39,7 @@ export default function SkillsSection() {
     setEditingId(newSkill.id)
   }
 
-  const updateSkill = (id: string, updates: Partial<typeof currentResume.data.skills[0]>) => {
+  const updateSkill = (id: string, updates: any) => {
     if (!currentResume) return
 
     const updated = currentResume.data.skills.map(skill =>

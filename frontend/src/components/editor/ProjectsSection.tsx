@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useResume } from '../../contexts/ResumeContext'
 import { Plus, Trash2, Edit3, ExternalLink } from 'lucide-react'
 
@@ -26,7 +26,7 @@ export default function ProjectsSection() {
     setEditingId(newProject.id)
   }
 
-  const updateProject = (id: string, updates: Partial<typeof currentResume.data.projects[0]>) => {
+  const updateProject = (id: string, updates: any) => {
     if (!currentResume) return
 
     const updated = currentResume.data.projects.map(project =>

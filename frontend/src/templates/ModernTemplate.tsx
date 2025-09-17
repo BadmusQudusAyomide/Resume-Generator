@@ -1,6 +1,6 @@
-import React from 'react'
+import { } from 'react'
 import { ResumeData, ResumeStyles } from '../contexts/ResumeContext'
-import { Mail, Phone, MapPin, Globe, Calendar } from 'lucide-react'
+import { Mail, Phone, MapPin, Globe } from 'lucide-react'
 
 interface ModernTemplateProps {
   data: ResumeData

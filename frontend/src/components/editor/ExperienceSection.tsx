@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useResume } from '../../contexts/ResumeContext'
 import { Plus, Trash2, Edit3 } from 'lucide-react'
 
@@ -27,7 +27,7 @@ export default function ExperienceSection() {
     setEditingId(newExperience.id)
   }
 
-  const updateExperience = (id: string, updates: Partial<typeof currentResume.data.experience[0]>) => {
+  const updateExperience = (id: string, updates: any) => {
     if (!currentResume) return
 
     const updated = currentResume.data.experience.map(exp =>
