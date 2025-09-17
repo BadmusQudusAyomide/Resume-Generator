@@ -1,0 +1,44 @@
+const fs = require("fs");
+const path = require("path");
+
+console.log(
+  "🔧 Updating backend .env with Firebase service account credentials...\n"
+);
+
+const backendEnv = `PORT=3001
+NODE_ENV=development
+
+# Firebase Admin
+FIREBASE_PROJECT_ID=resume-generator-164f7
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQClQHoqeFebFN+w\\nUNzuq+FT2d1PPCmKjdIMqlbJ7HO8pM1p5iiwDDOI9ue8/+UhanTUrT4loY1SzZ8e\\nN1xQGkPUTG5KdJsuip2jbyjVN3MQbNFzwbxSzclF5KHggK62r9gdpDDjbtPxy7Ec\\nvkpx3EyFNEmHvdj+Yu0JrnJVkw2Mhi50x96+bjC2UC7ic6ACvYYpPhmdmUVXlNxB\\nG0b4CxH70rtBUFcbJ38l39mNJlVGvDlVRCkvhzxmnNUJ9iKWBNJizvVQdUKS+yxz\\nZqNGxPetdw3MdwudVE+tHgpkIwxyvj3mofE7hLoq7S+283b+rm9kpfhuIRKR8vIK\\n1v4mvm2pAgMBAAECggEABc+RHCo0Jmti/D+zrR7VIw4vpogei9U11CUvPRV38mO3\\nJ2ik+J/NNh08g9xZscWdCxd2bntSTV2WoUjgEZ8C0JXJcQvNoyLTrToM7QZwoNy6\\ntr/Sv/SlhbQm7w6HVjwztMMfxveQM1nuxex5EKzm8e4nQcMuvK8815DPS2wK12yX\\n41W6iLQQ3Q3W71/wXzJGki5f//niTm3Qu0gepoGkmuIwDZ887YnimuLs1kCXtSfe\\nos3c65J1zvz+RZMqjF3BXBEIA9DomYx3tHmU2DNcZ8uCD9VT4wgL+XBEZfVizPL2\\nOZDqRyuD5QzStcS/naUSPgYWBv6Hr2j320dKkD2l4wKBgQDpr+/pPpyCfvnhZ78w\\nDX63/OuAhR8secF4jFPQ6kJpIzves1GQ8pihCzL8IIw47HclD4KMVT23rQtLTFun\\nQBgdSjHP3PH79COW/1bIp18Y18JqEGzIpo/bqa93xJXH8rgFoANm4FcvH5E7d0CT\\nh9fGv/umBFnn5KZxgd+mFdAIgwKBgQC1B8KzTIqT0dYqPa0wdOxnls43vpCdzYm4\\nkNvooEZlzVZFf1rcEUAlgMLHoadj3XR7HqdfCjwI3lw+MaQFhja4yCS4DCejcDvP\\nx8oqvZc8oWSsQBRKXetHBllRVaW7xTPNPYzW4rod1q4EvC0nEo/MPG3iiidK5hpR\\nEs8Jd/DhYwKBgQDbXRyIhw3EMg2/WfRO11wsum8Xpd8tkN3cm13SrxTIPRrmYs4e\\nkpxUEH87zhHTHaZ6U6TottvIn9gKRxOCXNhGJm+8AFvnd7Yw+GAu226Zk3AcwG5d\\nrH0+Znsgopk3qNC19w86cz1kLu3WNIuZ8drL50wC+/KpjCnyQ0f+UFuIoQKBgQCX\\nClqQbpRQsQsXQ05015lG9LQqHn1arFrz+yj/9nnGBoSsh42vf1Ud9UiOd3nKAMNm\\n1jSfP1LHs38TBSfs1AZkNdktFjccTlAZFIDBGF5O3/m3Hd/QDHx5TfrHucYF3ItT\\n+r6/q3vN2YhnuvmRWBNSPDkSgmI2Q7ZBXogPRltcMQKBgQDf/zHHNIq+sNKov6Qe\\nfGf0UjIZ8WuAbsBi1LiXSxAp5qeoR59V+EnaKuP+jm521tiAPZIkqZVtvpQthGAk\\n28OvOVFYLmddKZ3JVlwsWRlaKR5erYUWrsKLBf7tfka2IpXV812YHUS7hVRWJmZs\\nKY6nqQTiTjym1RHb0qn3uE7SgQ==\\n-----END PRIVATE KEY-----\\n"
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-fbsvc@resume-generator-164f7.iam.gserviceaccount.com
+
+# OpenAI
+OPENAI_API_KEY=sk-your_openai_api_key
+
+# Stripe (optional)
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+# Cloudinary (optional)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# CORS
+FRONTEND_URL=http://localhost:3001`;
+
+try {
+  fs.writeFileSync(path.join("backend", ".env"), backendEnv);
+  console.log(
+    "✅ Updated backend/.env with Firebase service account credentials"
+  );
+  console.log("\n🎉 Backend is now ready!");
+  console.log("\n📋 Next steps:");
+  console.log("1. Enable Authentication in Firebase Console");
+  console.log("2. Create a Firestore database");
+  console.log("3. Restart your backend server");
+  console.log("4. Test the application at http://localhost:3001");
+} catch (error) {
+  console.error("❌ Error updating backend .env:", error.message);
+}

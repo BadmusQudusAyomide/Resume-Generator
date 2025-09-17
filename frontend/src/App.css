@@ -1,0 +1,16 @@
+/* App-specific styles */
+.preview-container {
+  max-width: 8.5in;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  min-height: 11in;
+}
+
+@media print {
+  .preview-container {
+    box-shadow: none;
+    margin: 0;
+    max-width: none;
+  }
+}
