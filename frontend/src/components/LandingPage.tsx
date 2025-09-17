@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FileText, Zap, Download, Star, ArrowRight, Users, Shield, Sparkles, ChevronDown, CheckCircle, Award, TrendingUp } from 'lucide-react'
+import { FileText, Zap, Download, ArrowRight, Users, Shield, Sparkles, ChevronDown, CheckCircle, Award, TrendingUp } from 'lucide-react'
 import AuthModal from './auth/AuthModal'
 
 export default function LandingPage() {
