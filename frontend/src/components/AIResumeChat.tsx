@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+// Removed unused ResumeData import
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { apiUrl, API_ENDPOINTS } from '../config/api'
