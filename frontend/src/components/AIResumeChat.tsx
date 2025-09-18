@@ -27,47 +27,7 @@ interface Message {
   isTyping?: boolean
 }
 
-interface ResumeData {
-  personalInfo: {
-    fullName: string
-    email: string
-    phone: string
-    location: string
-    linkedIn?: string
-    portfolio?: string
-  }
-  summary: string
-  experience: Array<{
-    company: string
-    position: string
-    duration: string
-    description: string[]
-    achievements: string[]
-  }>
-  education: Array<{
-    institution: string
-    degree: string
-    field: string
-    year: string
-    gpa?: string
-  }>
-  skills: {
-    technical: string[]
-    soft: string[]
-    languages: string[]
-  }
-  projects: Array<{
-    name: string
-    description: string
-    technologies: string[]
-    link?: string
-  }>
-  certifications: Array<{
-    name: string
-    issuer: string
-    date: string
-  }>
-}
+// Removed unused ResumeData interface
 
 export default function AIResumeChat() {
   const { user } = useAuth()
@@ -77,7 +37,7 @@ export default function AIResumeChat() {
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [extractedData, setExtractedData] = useState<any>({})
-  const [conversationId, setConversationId] = useState<string>('')
+  // Removed unused conversationId state
   const [isComplete, setIsComplete] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -136,7 +96,6 @@ export default function AIResumeChat() {
   useEffect(() => {
     // Initialize conversation only once when user is available and no messages exist
     if (user && messages.length === 0) {
-      setConversationId(user.uid)
       addAIMessage(conversationSteps[0].question)
     }
   }, [user, messages.length]) // Include messages.length in dependencies

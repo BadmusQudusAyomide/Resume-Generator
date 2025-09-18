@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, TrendingUp, Target, Wand2, Loader2 } from 'lucide-react'
+import { TrendingUp, Target, Wand2, Loader2 } from 'lucide-react'
 
 interface AIToolsProps {
   section: string
@@ -29,7 +29,7 @@ export default function AITools({ section, content, onContentUpdate, className =
           enhancedContent = await rewriteContent(content, section)
           break
         case 'metrics':
-          enhancedContent = await addMetrics(content, section)
+          enhancedContent = await addMetrics(content)
           break
         case 'tailor':
           enhancedContent = await tailorContent(content, section)
@@ -75,7 +75,7 @@ export default function AITools({ section, content, onContentUpdate, className =
     return `${text} (Enhanced with AI optimization)`
   }
 
-  const addMetrics = async (text: string, sectionType: string): Promise<string> => {
+  const addMetrics = async (text: string): Promise<string> => {
     // Mock metrics addition - replace with actual AI service
     const metrics = [
       'increased efficiency by 35%',
