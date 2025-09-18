@@ -11,8 +11,6 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
   const navigate = useNavigate()
   const [selectedMethod, setSelectedMethod] = useState<'ai' | 'manual' | null>(null)
 
-  console.log('StartMethodModal - isOpen:', isOpen) // Debug log
-
   if (!isOpen) return null
 
   const handleMethodSelect = (method: 'ai' | 'manual') => {

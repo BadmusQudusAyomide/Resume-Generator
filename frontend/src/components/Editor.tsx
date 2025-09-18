@@ -1,14 +1,17 @@
 import { useAuth } from '../contexts/AuthContext'
 import { useResume } from '../contexts/ResumeContext'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { FileText, User, Briefcase, GraduationCap, Code, FolderOpen, Palette } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { FileText, User, Briefcase, GraduationCap, Code, FolderOpen, Palette, Download, TrendingUp } from 'lucide-react'
 import PersonalInfo from './editor/PersonalInfo'
 import ExperienceSection from './editor/ExperienceSection'
 import EducationSection from './editor/EducationSection'
 import SkillsSection from './editor/SkillsSection'
 import ProjectsSection from './editor/ProjectsSection'
 import StyleControls from './editor/StyleControls'
+import TemplateSelector from './editor/TemplateSelector'
+import ExportOptions from './editor/ExportOptions'
+import AIFeedbackPanel from './editor/AIFeedbackPanel'
 import Preview from './Preview'
 
 export default function Editor() {
@@ -16,6 +19,7 @@ export default function Editor() {
   const { currentResume, loading, createResumeWithAIData } = useResume()
   const location = useLocation()
   const navigate = useNavigate()
+  const [activeRightPanel, setActiveRightPanel] = useState<'preview' | 'templates' | 'export' | 'feedback'>('preview')
 
   // Check if we have AI-generated data to create a resume with
   useEffect(() => {
@@ -34,14 +38,23 @@ export default function Editor() {
     }
   }, [location.state, currentResume, createResumeWithAIData, navigate])
 
+  const handleTemplateSelect = (templateId: string) => {
+    if (currentResume) {
+      // Template selection logic would go here
+      console.log('Template selected:', templateId)
+    }
+  }
+
+  const handleUpgradeClick = () => {
+    navigate('/pricing')
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="glass-card text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-600">
-            {location.state?.resumeData ? 'Creating your AI-powered resume...' : 'Loading your resume...'}
-          </p>
+          <p className="text-gray-600">Loading resume...</p>
         </div>
       </div>
     )
@@ -120,6 +133,45 @@ export default function Editor() {
     }
   ]
 
+  const rightPanelTabs = [
+    { id: 'preview', label: 'Preview', icon: <FileText className="w-4 h-4" /> },
+    { id: 'templates', label: 'Templates', icon: <Palette className="w-4 h-4" /> },
+    { id: 'export', label: 'Export', icon: <Download className="w-4 h-4" /> },
+    { id: 'feedback', label: 'AI Feedback', icon: <TrendingUp className="w-4 h-4" /> }
+  ]
+
+  const renderRightPanelContent = () => {
+    switch (activeRightPanel) {
+      case 'templates':
+        return (
+          <TemplateSelector
+            currentTemplate={currentResume?.templateId || 'modern'}
+            onTemplateSelect={handleTemplateSelect}
+            onUpgradeClick={handleUpgradeClick}
+          />
+        )
+      case 'export':
+        return (
+          <ExportOptions
+            resumeData={currentResume?.data}
+            onUpgradeClick={handleUpgradeClick}
+          />
+        )
+      case 'feedback':
+        return (
+          <AIFeedbackPanel
+            resumeData={currentResume?.data}
+          />
+        )
+      default:
+        return (
+          <div className="preview-container bg-white/50 rounded-xl p-4 backdrop-blur-sm border border-white/20">
+            <Preview />
+          </div>
+        )
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
       {/* Editor Panel */}
@@ -134,7 +186,7 @@ export default function Editor() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center text-white">
                 {section.icon}
               </div>
-              <h2 className="text-xl font-semibold text-gray-700">
+              <h2 className="text-xl font-semibold text-white">
                 {section.title}
               </h2>
             </div>
@@ -143,18 +195,31 @@ export default function Editor() {
         ))}
       </div>
 
-      {/* Preview Panel */}
+      {/* Right Panel with Tabs */}
       <div className="xl:col-span-1">
         <div className="sticky top-32">
           <div className="glass-card">
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white">
-                <FileText className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-700">Live Preview</h3>
+            {/* Tab Navigation */}
+            <div className="flex space-x-1 mb-6 bg-gray-800/50 rounded-xl p-1">
+              {rightPanelTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveRightPanel(tab.id as any)}
+                  className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeRightPanel === tab.id
+                      ? 'bg-white text-gray-900'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                  }`}
+                >
+                  {tab.icon}
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
             </div>
-            <div className="preview-container bg-white/50 rounded-xl p-4 backdrop-blur-sm border border-white/20">
-              <Preview />
+
+            {/* Tab Content */}
+            <div className="min-h-[600px]">
+              {renderRightPanelContent()}
             </div>
           </div>
         </div>

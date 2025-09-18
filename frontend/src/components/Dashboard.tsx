@@ -31,12 +31,10 @@ export default function Dashboard() {
   }
 
   const handleCreateResume = () => {
-    console.log('handleCreateResume clicked, user:', !!user) // Debug log
     if (!user) {
       openAuthModal('signup')
       return
     }
-    console.log('Setting showStartMethodModal to true') // Debug log
     setShowStartMethodModal(true)
   }
 

@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../contexts/AuthContext'
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../lib/firebase'
 import { 
   ArrowRight, 
   ArrowLeft, 
@@ -58,6 +61,7 @@ const steps = [
 ]
 
 export default function ManualFormWizard() {
+  const { user } = useAuth()
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<FormData>({
@@ -100,6 +104,31 @@ export default function ManualFormWizard() {
   })
 
   const watchedValues = watch()
+
+  // Auto-save progress to Firestore
+  const saveProgressToFirestore = async (data: FormData) => {
+    if (user) {
+      try {
+        await setDoc(doc(db, 'resume_drafts', user.uid), {
+          ...data,
+          type: 'manual_form',
+          currentStep,
+          updatedAt: new Date(),
+          userId: user.uid
+        })
+        console.log('Form progress saved to Firestore')
+      } catch (error) {
+        console.error('Failed to save form progress:', error)
+      }
+    }
+  }
+
+  // Auto-save when form data changes
+  useEffect(() => {
+    if (formData && currentStep > 0) {
+      saveProgressToFirestore(formData)
+    }
+  }, [formData, currentStep])
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {

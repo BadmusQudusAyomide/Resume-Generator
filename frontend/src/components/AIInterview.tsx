@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../lib/firebase'
 import { 
   Send, 
   Sparkles, 
@@ -10,7 +12,6 @@ import {
   Code, 
   Target,
   CheckCircle,
-  ArrowRight,
   MessageCircle
 } from 'lucide-react'
 
@@ -107,6 +108,32 @@ export default function AIInterview() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [collectedData, setCollectedData] = useState<any>({})
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
+
+  // Auto-save progress to Firestore
+  const saveProgressToFirestore = async (data: any) => {
+    if (user && Object.keys(data).length > 0) {
+      try {
+        await setDoc(doc(db, 'resume_drafts', user.uid), {
+          ...data,
+          type: 'ai_interview',
+          currentStep,
+          completedSteps,
+          updatedAt: new Date(),
+          userId: user.uid
+        })
+        console.log('Progress saved to Firestore')
+      } catch (error) {
+        console.error('Failed to save progress:', error)
+      }
+    }
+  }
+
+  // Auto-save when data changes
+  useEffect(() => {
+    if (collectedData && Object.keys(collectedData).length > 0) {
+      saveProgressToFirestore(collectedData)
+    }
+  }, [collectedData, currentStep])
 
   // Initialize conversation
   useEffect(() => {
