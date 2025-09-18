@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FileText, Zap, Download, ArrowRight, Users, Shield, Sparkles, ChevronDown, CheckCircle, Award, TrendingUp } from 'lucide-react'
+import { FileText, ArrowRight, Users, ChevronDown, CheckCircle, Award, TrendingUp, MessageSquare, Brain, Wand2 } from 'lucide-react'
 import AuthModal from './auth/AuthModal'
 
 export default function LandingPage() {
@@ -8,24 +8,24 @@ export default function LandingPage() {
 
   const features = [
     {
+      icon: <MessageSquare className="w-6 h-6" />,
+      title: 'AI Conversation',
+      description: 'Chat naturally with AI to build your resume effortlessly.'
+    },
+    {
+      icon: <Brain className="w-6 h-6" />,
+      title: 'Smart Optimization',
+      description: 'AI enhances your content for ATS compatibility and impact.'
+    },
+    {
+      icon: <Wand2 className="w-6 h-6" />,
+      title: 'Auto-Generated',
+      description: 'Professional content created and formatted automatically.'
+    },
+    {
       icon: <FileText className="w-6 h-6" />,
-      title: 'Professional Templates',
-      description: 'ATS-friendly designs crafted by experts.'
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: 'AI-Powered',
-      description: 'Smart content suggestions and optimization.'
-    },
-    {
-      icon: <Download className="w-6 h-6" />,
-      title: 'Instant Export',
-      description: 'Download in PDF, Word, or multiple formats.'
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: 'Secure & Private',
-      description: 'Your data is encrypted and never shared.'
+      title: 'Premium Templates',
+      description: 'Choose from expert-designed, ATS-friendly templates.'
     }
   ]
 
@@ -62,21 +62,20 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto text-center z-10">
           {/* Premium badge */}
           <div className="inline-flex items-center space-x-2 glass-strong px-4 py-2 rounded-full mb-8 animate-gentle-float">
-            <Sparkles className="w-4 h-4 text-yellow-400" />
-            <span className="text-sm font-medium text-gray-300">Premium Resume Builder</span>
-            <Sparkles className="w-4 h-4 text-yellow-400" />
+            <Brain className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-medium text-gray-300">AI-Powered Resume Builder</span>
+            <Wand2 className="w-4 h-4 text-purple-400" />
           </div>
 
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
-            Craft Your
+            Chat Your Way to a
             <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-glow">
               Perfect Resume
             </span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Transform your career with our sophisticated resume builder.
-            Professional templates, AI-powered optimization, and instant results.
+            Simply have a conversation with our AI. It will extract your information, optimize your content for ATS systems, and create a professional resume automatically.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
@@ -84,7 +83,8 @@ export default function LandingPage() {
               onClick={() => openAuthModal('signup')}
               className="btn btn-primary btn-lg glow flex items-center space-x-3 group"
             >
-              <span>Start Building Now</span>
+              <MessageSquare className="w-5 h-5" />
+              <span>Start AI Chat</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
 
@@ -174,7 +174,7 @@ export default function LandingPage() {
               </h2>
 
               <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-                Join thousands of professionals who've transformed their careers with our premium resume builder.
+                Join thousands of professionals who've transformed their careers with our AI-powered conversational resume builder.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -182,7 +182,8 @@ export default function LandingPage() {
                   onClick={() => openAuthModal('signup')}
                   className="btn btn-primary btn-lg glow flex items-center space-x-3 group"
                 >
-                  <span>Get Started Free</span>
+                  <MessageSquare className="w-5 h-5" />
+                  <span>Start AI Chat Free</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSubscription } from '../contexts/SubscriptionContext'
 import { templates, templateCategories } from '../data/templates'
 import { Template } from '../types/subscription'
@@ -41,6 +41,10 @@ export default function TemplateGallery({ onSelectTemplate }: TemplateGalleryPro
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const { currentPlan, canAccessTemplate } = useSubscription()
   const navigate = useNavigate()
+  const location = useLocation()
+  
+  // Check if we have AI-generated resume data
+  const aiResumeData = location.state?.resumeData
 
   const filteredTemplates = selectedCategory === 'all' 
     ? templates 
@@ -51,7 +55,18 @@ export default function TemplateGallery({ onSelectTemplate }: TemplateGalleryPro
       setShowUpgradeModal(true)
       return
     }
-    onSelectTemplate(template.id)
+    
+    // If we have AI-generated data, navigate to editor with both template and data
+    if (aiResumeData) {
+      navigate('/editor', { 
+        state: { 
+          templateId: template.id, 
+          resumeData: aiResumeData 
+        } 
+      })
+    } else {
+      onSelectTemplate(template.id)
+    }
   }
 
   const handleUpgrade = () => {
@@ -63,16 +78,37 @@ export default function TemplateGallery({ onSelectTemplate }: TemplateGalleryPro
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Choose Your Perfect
-            <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Resume Template
-            </span>
-          </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Professional templates designed by experts to help you land your dream job.
-            Choose from our collection of ATS-friendly designs.
-          </p>
+          {aiResumeData ? (
+            <>
+              <div className="inline-flex items-center space-x-3 glass-strong px-6 py-3 rounded-full mb-6">
+                <Sparkles className="w-5 h-5 text-green-400" />
+                <span className="text-white font-medium">AI Resume Data Ready!</span>
+                <Sparkles className="w-5 h-5 text-green-400" />
+              </div>
+              <h1 className="text-5xl font-bold text-white mb-4">
+                Choose Your Perfect
+                <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  Resume Template
+                </span>
+              </h1>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Great! I've optimized your information for ATS compatibility. Now choose a template and watch your resume come to life with your personalized, professional content.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-5xl font-bold text-white mb-4">
+                Choose Your Perfect
+                <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  Resume Template
+                </span>
+              </h1>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Professional templates designed by experts to help you land your dream job.
+                Choose from our collection of ATS-friendly designs.
+              </p>
+            </>
+          )}
         </div>
 
         {/* Current Plan Badge */}

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useRef } from 'react'
 import { useResume } from '../../contexts/ResumeContext'
 import { useForm } from 'react-hook-form'
 
@@ -9,13 +9,19 @@ export default function PersonalInfo() {
   })
 
   const watchedValues = watch()
+  const isInitialMount = useRef(true)
 
-  // Update resume data when form values change
-  React.useEffect(() => {
-    if (currentResume) {
+  // Update resume data when form values change (skip first render)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+    
+    if (currentResume && Object.keys(watchedValues).length > 0) {
       updateResumeData({ personal: watchedValues })
     }
-  }, [watchedValues, currentResume, updateResumeData])
+  }, [watchedValues]) // Only depend on watchedValues
 
   return (
     <div className="space-y-4">

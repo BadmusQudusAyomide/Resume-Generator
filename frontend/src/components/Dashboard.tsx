@@ -14,12 +14,14 @@ import {
   Sparkles
 } from 'lucide-react'
 import AuthModal from './auth/AuthModal'
+import StartMethodModal from './StartMethodModal'
 
 export default function Dashboard() {
   const { user } = useAuth()
   const { currentPlan } = useSubscription()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup')
+  const [showStartMethodModal, setShowStartMethodModal] = useState(false)
   const [userResumes] = useState<any[]>([])
   const navigate = useNavigate()
 
@@ -29,11 +31,13 @@ export default function Dashboard() {
   }
 
   const handleCreateResume = () => {
+    console.log('handleCreateResume clicked, user:', !!user) // Debug log
     if (!user) {
       openAuthModal('signup')
       return
     }
-    navigate('/templates')
+    console.log('Setting showStartMethodModal to true') // Debug log
+    setShowStartMethodModal(true)
   }
 
   const handleEditResume = (resumeId: string) => {
@@ -162,7 +166,7 @@ export default function Dashboard() {
                 className="btn btn-primary btn-lg flex items-center space-x-3 group"
               >
                 <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                <span>Create New Resume</span>
+                <span>+ Create New Resume</span>
               </button>
             </div>
           </div>
@@ -217,8 +221,8 @@ export default function Dashboard() {
                   <Plus className="w-7 h-7 text-white/80" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">Create Resume</h3>
-                  <p className="text-gray-400 text-sm">Start with a professional template</p>
+                  <h3 className="text-lg font-semibold text-white mb-1">Create New Resume</h3>
+                  <p className="text-gray-400 text-sm">Choose AI Interview or Manual Form</p>
                 </div>
               </div>
             </div>
@@ -277,7 +281,7 @@ export default function Dashboard() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-4">No resumes yet</h3>
               <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                Create your first professional resume and take the next step in your career journey.
+                Start a conversation with our AI to create your first professional, ATS-optimized resume.
               </p>
               <button
                 onClick={handleCreateResume}
@@ -362,6 +366,12 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+      
+      {/* Start Method Modal */}
+      <StartMethodModal
+        isOpen={showStartMethodModal}
+        onClose={() => setShowStartMethodModal(false)}
+      />
     </div>
   )
 }

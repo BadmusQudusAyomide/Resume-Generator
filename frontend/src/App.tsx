@@ -11,6 +11,9 @@ import LandingPage from './components/LandingPage'
 import Dashboard from './components/Dashboard'
 import TemplateGallery from './components/TemplateGallery'
 import PricingPage from './components/PricingPage'
+import AIResumeChat from './components/AIResumeChat'
+import AIInterview from './components/AIInterview'
+import ManualFormWizard from './components/ManualFormWizard'
 import './App.css'
 
 function AppContent() {
@@ -47,15 +50,30 @@ function AppContent() {
           element={
             <TemplateGallery 
               onSelectTemplate={(templateId) => {
-                // Navigate to editor with selected template
-                window.location.href = `/editor?template=${templateId}`
+                // This will be handled by the TemplateGallery component internally
+                console.log('Template selected:', templateId)
               }} 
             />
           } 
         />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/ai-chat" element={<AIResumeChat />} />
+        <Route path="/ai-interview" element={<AIInterview />} />
+        <Route path="/manual-form" element={<ManualFormWizard />} />
         <Route
           path="/editor/:id?"
+          element={
+            <div className="pt-24 px-4">
+              <div className="max-w-7xl mx-auto">
+                <div className="animate-fade-in">
+                  <Editor />
+                </div>
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="/editor"
           element={
             <div className="pt-24 px-4">
               <div className="max-w-7xl mx-auto">

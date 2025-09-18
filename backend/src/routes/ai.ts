@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { authenticateToken, AuthenticatedRequest } from '../middleware/auth'
-import { generateAISuggestion } from '../services/aiService'
+import { generateAISuggestion, processResumeConversation, generateOptimizedResumeSummary } from '../services/aiService'
 
 const router = Router()
 
@@ -56,6 +56,50 @@ router.get('/prompt-types', (req, res) => {
       }
     ]
   })
+})
+
+// Process resume conversation endpoint
+router.post('/process-resume-conversation', authenticateToken, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { step, userInput, previousData, conversationHistory } = req.body
+
+    if (typeof step !== 'number' || !userInput) {
+      return res.status(400).json({ error: 'Step and user input are required' })
+    }
+
+    // TODO: Check user's AI quota/plan
+    // TODO: Rate limiting for free users
+
+    const result = await processResumeConversation({
+      step,
+      userInput,
+      previousData: previousData || {},
+      conversationHistory: conversationHistory || []
+    })
+
+    res.json(result)
+  } catch (error) {
+    console.error('Error processing resume conversation:', error)
+    res.status(500).json({ error: 'Failed to process conversation' })
+  }
+})
+
+// Generate optimized resume summary
+router.post('/generate-summary', authenticateToken, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { resumeData } = req.body
+
+    if (!resumeData) {
+      return res.status(400).json({ error: 'Resume data is required' })
+    }
+
+    const summary = await generateOptimizedResumeSummary(resumeData)
+
+    res.json({ summary })
+  } catch (error) {
+    console.error('Error generating resume summary:', error)
+    res.status(500).json({ error: 'Failed to generate summary' })
+  }
 })
 
 export default router

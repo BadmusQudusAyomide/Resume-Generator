@@ -1,5 +1,7 @@
 import { useAuth } from '../contexts/AuthContext'
 import { useResume } from '../contexts/ResumeContext'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import { FileText, User, Briefcase, GraduationCap, Code, FolderOpen, Palette } from 'lucide-react'
 import PersonalInfo from './editor/PersonalInfo'
 import ExperienceSection from './editor/ExperienceSection'
@@ -11,14 +13,35 @@ import Preview from './Preview'
 
 export default function Editor() {
   const { user } = useAuth()
-  const { currentResume, loading } = useResume()
+  const { currentResume, loading, createResumeWithAIData } = useResume()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // Check if we have AI-generated data to create a resume with
+  useEffect(() => {
+    const aiData = location.state?.resumeData
+    const templateId = location.state?.templateId
+    
+    if (aiData && templateId && !currentResume) {
+      createResumeWithAIData(aiData, templateId)
+        .then((resumeId) => {
+          // Clear the state to prevent re-creation
+          navigate(`/editor/${resumeId}`, { replace: true })
+        })
+        .catch((error) => {
+          console.error('Failed to create resume with AI data:', error)
+        })
+    }
+  }, [location.state, currentResume, createResumeWithAIData, navigate])
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="glass-card text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your resume...</p>
+          <p className="text-gray-600">
+            {location.state?.resumeData ? 'Creating your AI-powered resume...' : 'Loading your resume...'}
+          </p>
         </div>
       </div>
     )
