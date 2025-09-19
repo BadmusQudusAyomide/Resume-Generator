@@ -30,7 +30,7 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="glass-card max-w-2xl w-full animate-scale-in my-8 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 sticky top-0 bg-gray-900/80 backdrop-blur-sm z-10">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 sticky top-0 glass backdrop-blur-sm z-10">
           <div className="pr-4">
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">Create New Resume</h2>
             <p className="text-sm sm:text-base text-gray-400">Choose how you'd like to get started</p>
@@ -44,7 +44,9 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
+        <div
+          className="p-4 sm:p-6 pb-12 overflow-y-auto flex-1 no-scrollbar"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* AI Interview Option */}
             <div
@@ -130,8 +132,8 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
           </div>
 
           {/* Bottom Note */}
-          <div className="mt-6 p-3 sm:p-4 glass-strong rounded-xl sticky bottom-0">
-            <p className="text-center text-xs sm:text-sm text-gray-400">
+          <div className="mt-4 p-2 sm:p-3 glass-strong rounded-xl pointer-events-none select-none">
+            <p className="text-center text-[10px] sm:text-xs leading-tight text-gray-400">
               💡 <strong className="text-white">Pro Tip:</strong> Both methods lead to the same powerful resume editor where you can customize everything!
             </p>
           </div>
