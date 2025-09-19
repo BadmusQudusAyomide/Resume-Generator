@@ -27,13 +27,13 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="glass-card max-w-2xl w-full animate-scale-in">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="glass-card max-w-2xl w-full animate-scale-in my-8 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Create New Resume</h2>
-            <p className="text-gray-400">Choose how you'd like to get started</p>
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 sticky top-0 bg-gray-900/80 backdrop-blur-sm z-10">
+          <div className="pr-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">Create New Resume</h2>
+            <p className="text-sm sm:text-base text-gray-400">Choose how you'd like to get started</p>
           </div>
           <button
             onClick={onClose}
@@ -44,11 +44,11 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* AI Interview Option */}
             <div
-              className={`glass-strong rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 border-2 ${
+              className={`glass-strong rounded-2xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-100 border-2 ${
                 selectedMethod === 'ai' 
                   ? 'border-blue-400/50 bg-blue-400/10' 
                   : 'border-white/10 hover:border-white/20'
@@ -80,7 +80,7 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
                   </div>
                 </div>
 
-                <button className="btn btn-primary w-full flex items-center justify-center space-x-2">
+                <button className="btn btn-primary w-full flex items-center justify-center space-x-2 py-2.5 sm:py-3 text-sm sm:text-base">
                   <span>Start AI Interview</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -89,7 +89,7 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
 
             {/* Manual Form Option */}
             <div
-              className={`glass-strong rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 border-2 ${
+              className={`glass-strong rounded-2xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-100 border-2 ${
                 selectedMethod === 'manual' 
                   ? 'border-green-400/50 bg-green-400/10' 
                   : 'border-white/10 hover:border-white/20'
@@ -121,7 +121,7 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
                   </div>
                 </div>
 
-                <button className="btn btn-glass w-full flex items-center justify-center space-x-2 border-green-400/30 hover:bg-green-400/10">
+                <button className="btn btn-glass w-full flex items-center justify-center space-x-2 border-green-400/30 hover:bg-green-400/10 py-2.5 sm:py-3 text-sm sm:text-base">
                   <span>Start Manual Form</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -130,8 +130,8 @@ export default function StartMethodModal({ isOpen, onClose }: StartMethodModalPr
           </div>
 
           {/* Bottom Note */}
-          <div className="mt-8 p-4 glass-strong rounded-xl">
-            <p className="text-center text-sm text-gray-400">
+          <div className="mt-6 p-3 sm:p-4 glass-strong rounded-xl sticky bottom-0">
+            <p className="text-center text-xs sm:text-sm text-gray-400">
               💡 <strong className="text-white">Pro Tip:</strong> Both methods lead to the same powerful resume editor where you can customize everything!
             </p>
           </div>

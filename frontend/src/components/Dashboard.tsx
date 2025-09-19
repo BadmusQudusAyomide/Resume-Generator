@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useSubscription } from '../contexts/SubscriptionContext'
 import { useNavigate } from 'react-router-dom'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../lib/firebase'
 import { 
   Plus, 
   FileText, 
@@ -22,7 +24,8 @@ export default function Dashboard() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup')
   const [showStartMethodModal, setShowStartMethodModal] = useState(false)
-  const [userResumes] = useState<any[]>([])
+  const [userResumes, setUserResumes] = useState<any[]>([])
+  const [loadingResumes, setLoadingResumes] = useState(true)
   const navigate = useNavigate()
 
   const openAuthModal = (mode: 'login' | 'signup') => {
@@ -54,11 +57,40 @@ export default function Dashboard() {
     }).format(date)
   }
 
-  // Mock user stats
+  // Fetch user's resumes
+  useEffect(() => {
+    const fetchUserResumes = async () => {
+      if (!user) {
+        setLoadingResumes(false)
+        return
+      }
+      
+      try {
+        setLoadingResumes(true)
+        const q = query(collection(db, 'resumes'), where('ownerId', '==', user.uid))
+        const querySnapshot = await getDocs(q)
+        const resumes = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+          updatedAt: doc.data().updatedAt?.toDate()
+        }))
+        setUserResumes(resumes)
+      } catch (error) {
+        console.error('Error fetching resumes:', error)
+      } finally {
+        setLoadingResumes(false)
+      }
+    }
+
+    fetchUserResumes()
+  }, [user])
+
+  // User stats
   const userStats = {
     totalResumes: userResumes.length,
-    totalDownloads: 0,
-    totalViews: 0,
+    totalDownloads: userResumes.reduce((sum, resume) => sum + (resume.downloads || 0), 0),
+    totalViews: userResumes.reduce((sum, resume) => sum + (resume.views || 0), 0),
     templatesUsed: new Set(userResumes.map(r => r.templateId)).size
   }
 
@@ -176,7 +208,11 @@ export default function Dashboard() {
             <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mx-auto mb-4">
               <FileText className="w-6 h-6 text-white/80" />
             </div>
-            <div className="text-2xl font-bold text-white mb-1">{userStats.totalResumes}</div>
+            {loadingResumes ? (
+              <div className="animate-pulse h-8 w-16 bg-white/10 rounded mx-auto mb-1"></div>
+            ) : (
+              <div className="text-2xl font-bold text-white mb-1">{userStats.totalResumes}</div>
+            )}
             <div className="text-gray-400 text-sm">Active Resumes</div>
           </div>
 
